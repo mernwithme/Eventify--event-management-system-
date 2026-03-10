@@ -13,6 +13,7 @@ app.use(cors({
         'http://localhost:5173',
         'http://localhost:3000',
         'https://eventify-event-management-system-ory749w2c-mernwithmes-projects.vercel.app',
+        'https://eventify-event-management-system-nine.vercel.app',
         process.env.FRONTEND_URL
     ].filter(Boolean),
     credentials: true
