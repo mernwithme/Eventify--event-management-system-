@@ -5,6 +5,8 @@ import { FaHeart, FaPlus, FaEdit, FaTrash, FaMapMarkerAlt } from 'react-icons/fa
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const ConcertEvents = () => {
     const { user } = useContext(AuthContext);
     const [concerts, setConcerts] = useState([]);
@@ -26,7 +28,7 @@ const ConcertEvents = () => {
 
     const fetchConcerts = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/concert-events');
+            const { data } = await axios.get(`${API_URL}/api/concert-events`);
             setConcerts(data);
         } catch (error) {
             console.error(error);
@@ -57,7 +59,7 @@ const ConcertEvents = () => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             if (editingId) {
-                await axios.put(`http://localhost:5000/api/concert-events/${editingId}`, formData, config);
+                await axios.put(`${API_URL}/api/concert-events/${editingId}`, formData, config);
             } else {
                 const payload = {
                     ...formData,
@@ -67,7 +69,7 @@ const ConcertEvents = () => {
                         diamond: Number(formData.pricing.diamond)
                     }
                 };
-                await axios.post('http://localhost:5000/api/concert-events', payload, config);
+                await axios.post(`${API_URL}/api/concert-events`, payload, config);
             }
             setShowModal(false);
             setFormData({ name: '', location: '', description: '', pricing: { gold: '', platinum: '', diamond: '' } });
@@ -83,7 +85,7 @@ const ConcertEvents = () => {
         if (window.confirm('Are you sure you want to delete this concert event?')) {
             try {
                 const config = { headers: { Authorization: `Bearer ${user.token}` } };
-                await axios.delete(`http://localhost:5000/api/concert-events/${id}`, config);
+                await axios.delete(`${API_URL}/api/concert-events/${id}`, config);
                 fetchConcerts();
             } catch (error) {
                 console.error(error);
@@ -108,7 +110,7 @@ const ConcertEvents = () => {
                 }
             };
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            await axios.post('http://localhost:5000/api/payments', payload, config);
+            await axios.post(`${API_URL}/api/payments`, payload, config);
 
             setLastPayment({ ...payload, eventName: selectedConcert.name, date: new Date().toLocaleDateString() });
             setShowBookingModal(false);

@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const PersonalEvents = () => {
     const { user } = useContext(AuthContext);
     const [events, setEvents] = useState([]);
@@ -19,7 +21,7 @@ const PersonalEvents = () => {
 
     const fetchEvents = async () => {
         try {
-            const { data } = await axios.get('http://localhost:5000/api/personal-events');
+            const { data } = await axios.get(`${API_URL}/api/personal-events`);
             setEvents(data);
         } catch (error) {
             console.error(error);
@@ -34,9 +36,9 @@ const PersonalEvents = () => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
             if (editingId) {
-                await axios.put(`http://localhost:5000/api/personal-events/${editingId}`, formData, config);
+                await axios.put(`${API_URL}/api/personal-events/${editingId}`, formData, config);
             } else {
-                await axios.post('http://localhost:5000/api/personal-events', formData, config);
+                await axios.post(`${API_URL}/api/personal-events`, formData, config);
             }
             setShowModal(false);
             setFormData({ name: '', location: '', time: '', description: '' });
@@ -51,7 +53,7 @@ const PersonalEvents = () => {
         if (window.confirm('Are you sure you want to delete this event?')) {
             try {
                 const config = { headers: { Authorization: `Bearer ${user.token}` } };
-                await axios.delete(`http://localhost:5000/api/personal-events/${id}`, config);
+                await axios.delete(`${API_URL}/api/personal-events/${id}`, config);
                 fetchEvents();
             } catch (error) {
                 console.error(error);
@@ -62,7 +64,7 @@ const PersonalEvents = () => {
     const handleRSVP = async (id) => {
         try {
             const config = { headers: { Authorization: `Bearer ${user.token}` } };
-            const { data } = await axios.post(`http://localhost:5000/api/personal-events/${id}/rsvp`, {}, config);
+            const { data } = await axios.post(`${API_URL}/api/personal-events/${id}/rsvp`, {}, config);
 
             setEvents(events.map(event => event._id === id ? data : event));
         } catch (error) {
