@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#764ba2;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0ba360;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="url(#grad1)" opacity="0.95"/>
+  
+  <!-- Outer ring -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="url(#grad2)" stroke-width="2" opacity="0.6"/>
+  
+  <!-- Calendar/Event shape -->
+  <rect x="50" y="45" width="100" height="110" rx="8" fill="rgba(255, 255, 255, 0.95)" stroke="none"/>
+  
+  <!-- Calendar header -->
+  <rect x="50" y="45" width="100" height="25" rx="8" fill="url(#grad1)" stroke="none"/>
+  
+  <!-- Header text (E) -->
+  <text x="100" y="67" font-size="18" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial, sans-serif">E</text>
+  
+  <!-- Date grid lines -->
+  <line x1="60" y1="80" x2="140" y2="80" stroke="rgba(102, 126, 234, 0.3)" stroke-width="1"/>
+  <line x1="60" y1="100" x2="140" y2="100" stroke="rgba(102, 126, 234, 0.3)" stroke-width="1"/>
+  <line x1="60" y1="120" x2="140" y2="120" stroke="rgba(102, 126, 234, 0.3)" stroke-width="1"/>
+  
+  <!-- Tick icon (check mark) for event confirmation -->
+  <g transform="translate(75, 90)">
+    <circle cx="0" cy="0" r="12" fill="url(#grad2)"/>
+    <polyline points="-4,-1 2,6 8,-5" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  
+  <!-- Small stars for celebration -->
+  <g fill="url(#grad2)">
+    <!-- Top right star -->
+    <polygon points="145,50 148,57 156,57 150,62 152,70 145,65 138,70 140,62 134,57 142,57"/>
+    <!-- Bottom left star -->
+    <polygon points="55,135 57,142 65,142 60,147 62,155 55,150 48,155 50,147 44,142 52,142"/>
+  </g>
+  
+  <!-- Glowing effect -->
+  <circle cx="100" cy="100" r="95" fill="none" stroke="white" stroke-width="1" opacity="0.3"/>
+</svg>
