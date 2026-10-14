@@ -14,6 +14,33 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    preferences: {
+        interests: {
+            type: [String],
+            default: []
+        },
+        skills: {
+            type: [String],
+            default: []
+        },
+        preferredCategories: {
+            type: [String],
+            default: []
+        },
+        preferredLocation: {
+            type: String,
+            default: '',
+            trim: true
+        },
+        maxBudget: {
+            type: Number,
+            default: null
+        },
+        allowOnline: {
+            type: Boolean,
+            default: true
+        }
     }
 }, { timestamps: true });
 

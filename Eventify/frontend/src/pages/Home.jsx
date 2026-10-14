@@ -29,9 +29,9 @@ const Home = () => {
                             Eventify provides the tools you need to make it legendary.
                         </p>
                         <div className="d-flex justify-content-center gap-3 flex-wrap">
-                            <Link to="/register">
+                            <Link to="/opportunities">
                                 <Button variant="primary" size="lg" className="px-5 py-3 rounded-pill fw-bold shadow-lg text-uppercase d-flex align-items-center gap-2">
-                                    Get Started <FaArrowRight />
+                                    🎯 Smart Recommendations <FaArrowRight />
                                 </Button>
                             </Link>
                             <Link to="/concert-events">
@@ -96,8 +96,8 @@ const Home = () => {
                                 </p>
                             </Col>
                         </Row>
-                        <Row className="g-5">
-                            <Col md={6}>
+                        <Row className="g-4">
+                            <Col md={4}>
                                 <Card className="h-100 glass-card border-0 p-4 transform-hover" style={{ background: 'linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 100%)' }}>
                                     <Card.Body>
                                         <div className="d-flex align-items-center mb-4">
@@ -108,9 +108,7 @@ const Home = () => {
                                             </div>
                                         </div>
                                         <Card.Text className="fs-5 mb-4 text-light-custom" style={{ opacity: 0.9, lineHeight: '1.6' }}>
-                                            Perfect for birthdays, weddings, or team meetups.
-                                            You control the guest list. Friends can RSVP easily, and you can track real-time attendance numbers.
-                                            Share your private link via WhatsApp or Instagram to get the party started.
+                                            Perfect for birthdays, weddings, or team meetups. You control the guest list, track real-time attendance, and share private RSVP invites.
                                         </Card.Text>
                                         <Link to="/personal-events">
                                             <Button variant="outline-light" className="rounded-pill px-4 fw-bold">Create Personal Event</Button>
@@ -118,7 +116,7 @@ const Home = () => {
                                     </Card.Body>
                                 </Card>
                             </Col>
-                            <Col md={6}>
+                            <Col md={4}>
                                 <Card className="h-100 glass-card border-0 p-4 transform-hover" style={{ background: 'linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 100%)' }}>
                                     <Card.Body>
                                         <div className="d-flex align-items-center mb-4">
@@ -129,12 +127,29 @@ const Home = () => {
                                             </div>
                                         </div>
                                         <Card.Text className="fs-5 mb-4 text-light-custom" style={{ opacity: 0.9, lineHeight: '1.6' }}>
-                                            Browse the latest concerts and shows nearby.
-                                            Select from Gold, Platinum, or Diamond tiers.
-                                            Our ticketing system handles payments securely (simulated) and sends instant confirmation.
+                                            Browse live concerts, music festivals, and stadium shows nearby with Gold, Platinum, and Diamond ticket tiers.
                                         </Card.Text>
                                         <Link to="/concert-events">
                                             <Button variant="outline-light" className="rounded-pill px-4 fw-bold">Book Tickets</Button>
+                                        </Link>
+                                    </Card.Body>
+                                </Card>
+                            </Col>
+                            <Col md={4}>
+                                <Card className="h-100 glass-card border-0 p-4 transform-hover" style={{ background: 'linear-gradient(145deg, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 100%)', border: '1px solid rgba(99, 102, 241, 0.3) !important' }}>
+                                    <Card.Body>
+                                        <div className="d-flex align-items-center mb-4">
+                                            <div className="display-4 text-primary me-3"><FaBolt /></div>
+                                            <div>
+                                                <Card.Title as="h2" className="fw-bold mb-0 text-white">Opportunity Intelligence</Card.Title>
+                                                <Card.Subtitle className="text-white">Smart Personalized Fit</Card.Subtitle>
+                                            </div>
+                                        </div>
+                                        <Card.Text className="fs-5 mb-4 text-light-custom" style={{ opacity: 0.9, lineHeight: '1.6' }}>
+                                            Transparent multi-signal matching engine that pairs you with events based on your exact skills, passions, location, and budget.
+                                        </Card.Text>
+                                        <Link to="/opportunities">
+                                            <Button variant="primary" className="rounded-pill px-4 fw-bold shadow-sm">Explore Matches</Button>
                                         </Link>
                                     </Card.Body>
                                 </Card>

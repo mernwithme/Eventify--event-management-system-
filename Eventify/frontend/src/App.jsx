@@ -11,6 +11,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import PersonalEvents from './pages/PersonalEvents';
 import ConcertEvents from './pages/ConcertEvents';
+import OpportunityIntelligence from './pages/OpportunityIntelligence';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -26,6 +27,7 @@ const Navigation = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
+            <Nav.Link as={Link} to="/opportunities">Opportunity Intelligence</Nav.Link>
             <Nav.Link as={Link} to="/personal-events">Personal Events</Nav.Link>
             <Nav.Link as={Link} to="/concert-events">Concert Events</Nav.Link>
           </Nav>
@@ -60,6 +62,14 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route
+              path="/opportunities"
+              element={
+                <ProtectedRoute>
+                  <OpportunityIntelligence />
+                </ProtectedRoute>
+              }
+            />
             <Route
               path="/personal-events"
               element={

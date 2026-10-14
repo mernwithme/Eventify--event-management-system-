@@ -46,11 +46,13 @@ const authRoutes = require('./routes/authRoutes');
 const personalEventRoutes = require('./routes/personalEventRoutes');
 const concertRoutes = require('./routes/concertRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const opportunityRoutes = require('./routes/opportunityRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/personal-events', personalEventRoutes);
 app.use('/api/concert-events', concertRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/opportunities', opportunityRoutes);
 
 // Test route
 app.get('/', (req, res) => {

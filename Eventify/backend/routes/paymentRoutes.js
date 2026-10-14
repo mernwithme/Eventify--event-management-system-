@@ -10,11 +10,26 @@ router.post('/', protect, async (req, res) => {
     const { concertEventId, ticketCategory, amount, customerDetails } = req.body;
 
     try {
+        const concert = await ConcertEvent.findById(concertEventId);
+        if (!concert) {
+            return res.status(404).json({ message: 'Concert event not found' });
+        }
+
+        const validCategories = ['gold', 'platinum', 'diamond'];
+        if (!validCategories.includes(ticketCategory)) {
+            return res.status(400).json({ message: 'Invalid ticket category' });
+        }
+
+        const verifiedAmount = concert.pricing[ticketCategory];
+        if (verifiedAmount === undefined || Number(amount) !== verifiedAmount) {
+            return res.status(400).json({ message: `Amount mismatch. Expected ₹${verifiedAmount} for ${ticketCategory} ticket.` });
+        }
+
         const payment = new Payment({
             user: req.user._id,
             concertEvent: concertEventId,
             ticketCategory,
-            amount,
+            amount: verifiedAmount,
             customerDetails
         });
         const createdPayment = await payment.save();

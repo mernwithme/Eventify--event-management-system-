@@ -5,16 +5,16 @@ const AuthContext = createContext();
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const userInfo = localStorage.getItem('userInfo');
-        if (userInfo) {
-            setUser(JSON.parse(userInfo));
+    const [user, setUser] = useState(() => {
+        try {
+            const userInfo = localStorage.getItem('userInfo');
+            return userInfo ? JSON.parse(userInfo) : null;
+        } catch (e) {
+            console.error('Failed to parse user info from localStorage', e);
+            return null;
         }
-        setLoading(false);
-    }, []);
+    });
+    const [loading] = useState(false);
 
     const login = async (email, password) => {
         try {
