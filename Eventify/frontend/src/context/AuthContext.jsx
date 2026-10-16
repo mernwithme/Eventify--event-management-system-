@@ -19,11 +19,47 @@ export const AuthProvider = ({ children }) => {
     const login = async (email, password) => {
         try {
             const { data } = await axios.post(`${API_URL}/api/auth/login`, { email, password });
+            if (data.otpRequired) {
+                return {
+                    success: true,
+                    otpRequired: true,
+                    email: data.email,
+                    message: data.message,
+                    devOtp: data.devOtp
+                };
+            }
             localStorage.setItem('userInfo', JSON.stringify(data));
             setUser(data);
             return { success: true };
         } catch (error) {
             return { success: false, message: error.response?.data?.message || 'Login failed' };
+        }
+    };
+
+    const verifyLoginOtp = async (email, otp) => {
+        try {
+            const { data } = await axios.post(`${API_URL}/api/auth/verify-login-otp`, { email, otp });
+            localStorage.setItem('userInfo', JSON.stringify(data));
+            setUser(data);
+            return { success: true };
+        } catch (error) {
+            return { success: false, message: error.response?.data?.message || 'Verification failed' };
+        }
+    };
+
+    const resendLoginOtp = async (email) => {
+        try {
+            const { data } = await axios.post(`${API_URL}/api/auth/resend-login-otp`, { email });
+            return {
+                success: true,
+                message: data.message || 'Verification code resent successfully',
+                devOtp: data.devOtp
+            };
+        } catch (error) {
+            return {
+                success: false,
+                message: error.response?.data?.message || 'Failed to resend verification code'
+            };
         }
     };
 
@@ -44,7 +80,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, login, register, logout, loading }}>
+        <AuthContext.Provider value={{ user, login, verifyLoginOtp, resendLoginOtp, register, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );

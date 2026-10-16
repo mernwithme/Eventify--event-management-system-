@@ -59,12 +59,12 @@ const Register = () => {
                             required
                         />
                     </Form.Group>
-                    <Button variant="primary" type="submit" className="w-100 rounded-pill py-2 fw-bold">
+                    <Button variant="primary" type="submit" className="w-100 py-2 fw-semibold">
                         Register
                     </Button>
                 </Form>
-                <div className="mt-4 text-center text-light" style={{ opacity: 0.8 }}>
-                    Already have an account? <Link to="/login" className="text-warning fw-bold text-decoration-none">Login</Link>
+                <div className="mt-4 text-center text-muted">
+                    Already have an account? <Link to="/login" className="text-primary fw-semibold text-decoration-none">Login</Link>
                 </div>
             </div>
         </Container>

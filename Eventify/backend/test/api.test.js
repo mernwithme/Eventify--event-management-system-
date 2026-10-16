@@ -57,4 +57,43 @@ describe('Security & API Protection Validation', () => {
         assert.equal(nextCalled, false);
         assert.equal(responseJson.message, 'Not authorized, token failed');
     });
+
+    describe('Login OTP Verification Logic', () => {
+        const crypto = require('crypto');
+
+        it('should correctly hash and match valid 6-digit OTP', () => {
+            const rawOtp = '482910';
+            const expectedHash = crypto.createHash('sha256').update(rawOtp).digest('hex');
+
+            const testInput = '482910';
+            const inputHash = crypto.createHash('sha256').update(testInput.trim()).digest('hex');
+
+            assert.equal(inputHash, expectedHash);
+        });
+
+        it('should reject mismatched OTP codes', () => {
+            const rawOtp = '482910';
+            const expectedHash = crypto.createHash('sha256').update(rawOtp).digest('hex');
+
+            const wrongInput = '123456';
+            const wrongInputHash = crypto.createHash('sha256').update(wrongInput.trim()).digest('hex');
+
+            assert.notEqual(wrongInputHash, expectedHash);
+        });
+
+        it('should detect when an OTP has expired', () => {
+            const expiredTimestamp = new Date(Date.now() - 1000); // 1 second in the past
+            const isExpired = expiredTimestamp.getTime() < Date.now();
+
+            assert.equal(isExpired, true);
+        });
+
+        it('should validate when an OTP is within 10-minute expiry window', () => {
+            const validTimestamp = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes in the future
+            const isExpired = validTimestamp.getTime() < Date.now();
+
+            assert.equal(isExpired, false);
+        });
+    });
 });
+

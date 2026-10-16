@@ -1,165 +1,204 @@
 import { Container, Row, Col, Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { FaMusic, FaUsers, FaLock, FaBolt, FaHeart, FaArrowRight } from 'react-icons/fa';
+import { FaMusic, FaUsers, FaCompass, FaArrowRight, FaShieldAlt, FaListUl, FaCalendarCheck } from 'react-icons/fa';
 
 const Home = () => {
     return (
-        <>
-            <div className="page-wrapper">
-                {/* Hero Section - Full Width */}
-                <div className="full-width-section text-center py-5" style={{
-                    background: 'radial-gradient(circle at center, rgba(118, 75, 162, 0.4) 0%, rgba(0,0,0,0) 70%)',
-                    minHeight: '85vh',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    position: 'relative',
-                    paddingTop: '100px'
-                }}>
-                    <div className="content-container">
-                        <span className="badge border border-light text-white bg-transparent rounded-pill px-3 py-2 mb-4 fw-bold shadow-sm">🚀 The Future of Event Management</span>
-                        <h1 className="display-1 fw-bold mb-4 text-white" style={{
-                            textShadow: '0 0 20px rgba(0,0,0,0.5)',
-                            letterSpacing: '-2px'
-                        }}>
-                            Eventify Your Life
-                        </h1>
-                        <p className="lead fs-3 text-light-custom mb-5 mx-auto" style={{ maxWidth: '800px', textShadow: '0 2px 4px rgba(0,0,0,0.5)' }}>
-                            Creativity meets organization. Whether it's an intimate gathering or a stadium tour,
-                            Eventify provides the tools you need to make it legendary.
+        <div className="page-wrapper">
+            {/* Hero Section */}
+            <section className="bg-white border-bottom py-5" aria-labelledby="hero-heading">
+                <Container className="content-container py-5 text-center">
+                    <div className="d-inline-flex align-items-center gap-2 mb-3">
+                        <span className="badge bg-primary px-3 py-2">
+                            Event Management & Discovery
+                        </span>
+                        <span className="badge bg-light text-muted border">
+                            MERN Production Stack
+                        </span>
+                    </div>
+
+                    <h1 id="hero-heading" className="display-4 fw-bold text-dark mb-4" style={{ letterSpacing: '-0.03em' }}>
+                        Organize Gatherings. Discover Live Events.
+                    </h1>
+
+                    <p className="lead text-muted mb-5 mx-auto" style={{ maxWidth: '780px', lineHeight: '1.7' }}>
+                        Eventify provides clear, reliable tools for coordinating private gatherings, browsing ticketed concert events in simulated test mode, and finding matched opportunities with multi-signal intelligence.
+                    </p>
+
+                    <div className="d-flex justify-content-center gap-3 flex-wrap">
+                        <Link to="/opportunities">
+                            <Button variant="primary" size="lg" className="px-4 py-2 fw-semibold d-flex align-items-center gap-2 shadow-sm">
+                                <FaCompass /> Explore Matched Opportunities <FaArrowRight size={14} />
+                            </Button>
+                        </Link>
+                        <Link to="/concert-events">
+                            <Button variant="outline-dark" size="lg" className="px-4 py-2 fw-semibold d-flex align-items-center gap-2">
+                                <FaMusic /> Browse Concerts
+                            </Button>
+                        </Link>
+                        <Link to="/personal-events">
+                            <Button variant="outline-secondary" size="lg" className="px-4 py-2 fw-semibold d-flex align-items-center gap-2">
+                                <FaUsers /> Personal Events
+                            </Button>
+                        </Link>
+                    </div>
+                </Container>
+            </section>
+
+            {/* Core Capabilities */}
+            <section className="py-5" aria-labelledby="features-heading">
+                <Container className="content-container py-4">
+                    <div className="text-center mb-5">
+                        <h2 id="features-heading" className="h3 fw-bold text-dark mb-2">
+                            Core Platform Capabilities
+                        </h2>
+                        <p className="text-muted mx-auto" style={{ maxWidth: '640px' }}>
+                            Designed for clear organization and verifiable event workflows without clutter.
                         </p>
-                        <div className="d-flex justify-content-center gap-3 flex-wrap">
-                            <Link to="/opportunities">
-                                <Button variant="primary" size="lg" className="px-5 py-3 rounded-pill fw-bold shadow-lg text-uppercase d-flex align-items-center gap-2">
-                                    🎯 Smart Recommendations <FaArrowRight />
-                                </Button>
-                            </Link>
-                            <Link to="/concert-events">
-                                <Button variant="outline-light" size="lg" className="px-5 py-3 rounded-pill fw-bold text-uppercase shadow-lg">
-                                    Explore Events
-                                </Button>
-                            </Link>
-                        </div>
                     </div>
-                </div>
 
-                {/* Why Choose Us Section - Full Width */}
-                <div className="full-width-section mb-5 pb-5">
-                    <div className="content-container">
-                        <Row className="text-center mb-5">
-                            <Col>
-                                <h2 className="display-4 fw-bold text-white mb-3">Why Choose Eventify?</h2>
-                                <p className="text-white fs-5">We combine power with simplicity for an unmatched experience.</p>
-                            </Col>
-                        </Row>
-                        <Row className="g-4">
-                            <Col md={4}>
-                                <div className="glass-card p-4 h-100 feature-card text-center border-0">
-                                    <div className="feature-icon-circle text-info" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                                        <FaBolt />
+                    <Row className="g-4">
+                        <Col md={4}>
+                            <Card className="h-100 border p-4 shadow-sm bg-white">
+                                <div className="d-flex align-items-center gap-3 mb-3 text-primary">
+                                    <div className="p-3 bg-primary bg-opacity-10 rounded">
+                                        <FaCalendarCheck size={24} />
                                     </div>
-                                    <h3 className="fw-bold mb-3 text-white">Lightning Fast</h3>
-                                    <p className="text-white">Create events in seconds. Our optimized platform ensures you spend less time managing and more time celebrating.</p>
+                                    <h3 className="h5 fw-bold mb-0 text-dark">Real-Time RSVPs</h3>
                                 </div>
-                            </Col>
-                            <Col md={4}>
-                                <div className="glass-card p-4 h-100 feature-card text-center border-0">
-                                    <div className="feature-icon-circle text-success" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                                        <FaLock />
-                                    </div>
-                                    <h3 className="fw-bold mb-3 text-white">Secure Payments</h3>
-                                    <p className="text-white">Your transactions are safe with us. We use simulated top-tier encryption standards for peace of mind.</p>
-                                </div>
-                            </Col>
-                            <Col md={4}>
-                                <div className="glass-card p-4 h-100 feature-card text-center border-0">
-                                    <div className="feature-icon-circle text-danger" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                                        <FaHeart />
-                                    </div>
-                                    <h3 className="fw-bold mb-3 text-white">Made with Love</h3>
-                                    <p className="text-white">Designed for users, by users. We understand the nuances of hosting both small parties and massive concerts.</p>
-                                </div>
-                            </Col>
-                        </Row>
-                    </div>
-                </div>
-
-                {/* Main Categories Section - Full Width */}
-                <div className="full-width-section py-5" style={{ background: 'rgba(255,255,255,0.03)', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
-                    <div className="content-container py-5">
-                        <Row className="text-center mb-5">
-                            <Col>
-                                <h2 className="display-4 fw-bold text-white mb-3">Public & Private Events</h2>
-                                <p className="text-white fs-5 mx-auto" style={{ maxWidth: '700px' }}>
-                                    Choose your path. Host a private gathering for your inner circle or discover public concerts open to the world.
-                                    Each experience is tailored to your needs.
+                                <p className="text-muted mb-0" style={{ lineHeight: '1.6' }}>
+                                    Create private events, send invitations, and track attendee confirmations instantly with authenticated user status.
                                 </p>
-                            </Col>
-                        </Row>
-                        <Row className="g-4">
-                            <Col md={4}>
-                                <Card className="h-100 glass-card border-0 p-4 transform-hover" style={{ background: 'linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 100%)' }}>
-                                    <Card.Body>
-                                        <div className="d-flex align-items-center mb-4">
-                                            <div className="display-4 text-warning me-3"><FaUsers /></div>
-                                            <div>
-                                                <Card.Title as="h2" className="fw-bold mb-0 text-white">Personal Events</Card.Title>
-                                                <Card.Subtitle className="text-white">Private & Exclusive</Card.Subtitle>
-                                            </div>
-                                        </div>
-                                        <Card.Text className="fs-5 mb-4 text-light-custom" style={{ opacity: 0.9, lineHeight: '1.6' }}>
-                                            Perfect for birthdays, weddings, or team meetups. You control the guest list, track real-time attendance, and share private RSVP invites.
-                                        </Card.Text>
-                                        <Link to="/personal-events">
-                                            <Button variant="outline-light" className="rounded-pill px-4 fw-bold">Create Personal Event</Button>
-                                        </Link>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            <Col md={4}>
-                                <Card className="h-100 glass-card border-0 p-4 transform-hover" style={{ background: 'linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(0,0,0,0) 100%)' }}>
-                                    <Card.Body>
-                                        <div className="d-flex align-items-center mb-4">
-                                            <div className="display-4 text-info me-3"><FaMusic /></div>
-                                            <div>
-                                                <Card.Title as="h2" className="fw-bold mb-0 text-white">Concert Events</Card.Title>
-                                                <Card.Subtitle className="text-white">Public & Ticketed</Card.Subtitle>
-                                            </div>
-                                        </div>
-                                        <Card.Text className="fs-5 mb-4 text-light-custom" style={{ opacity: 0.9, lineHeight: '1.6' }}>
-                                            Browse live concerts, music festivals, and stadium shows nearby with Gold, Platinum, and Diamond ticket tiers.
-                                        </Card.Text>
-                                        <Link to="/concert-events">
-                                            <Button variant="outline-light" className="rounded-pill px-4 fw-bold">Book Tickets</Button>
-                                        </Link>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                            <Col md={4}>
-                                <Card className="h-100 glass-card border-0 p-4 transform-hover" style={{ background: 'linear-gradient(145deg, rgba(99, 102, 241, 0.15) 0%, rgba(0,0,0,0) 100%)', border: '1px solid rgba(99, 102, 241, 0.3) !important' }}>
-                                    <Card.Body>
-                                        <div className="d-flex align-items-center mb-4">
-                                            <div className="display-4 text-primary me-3"><FaBolt /></div>
-                                            <div>
-                                                <Card.Title as="h2" className="fw-bold mb-0 text-white">Opportunity Intelligence</Card.Title>
-                                                <Card.Subtitle className="text-white">Smart Personalized Fit</Card.Subtitle>
-                                            </div>
-                                        </div>
-                                        <Card.Text className="fs-5 mb-4 text-light-custom" style={{ opacity: 0.9, lineHeight: '1.6' }}>
-                                            Transparent multi-signal matching engine that pairs you with events based on your exact skills, passions, location, and budget.
-                                        </Card.Text>
-                                        <Link to="/opportunities">
-                                            <Button variant="primary" className="rounded-pill px-4 fw-bold shadow-sm">Explore Matches</Button>
-                                        </Link>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        </Row>
-                    </div>
-                </div>
-            </div>
-        </>
+                            </Card>
+                        </Col>
 
+                        <Col md={4}>
+                            <Card className="h-100 border p-4 shadow-sm bg-white">
+                                <div className="d-flex align-items-center gap-3 mb-3 text-primary">
+                                    <div className="p-3 bg-primary bg-opacity-10 rounded">
+                                        <FaCompass size={24} />
+                                    </div>
+                                    <h3 className="h5 fw-bold mb-0 text-dark">Opportunity Intelligence</h3>
+                                </div>
+                                <p className="text-muted mb-0" style={{ lineHeight: '1.6' }}>
+                                    Deterministic multi-signal recommendation engine that pairs attendees with events using category, interests, format, and budget filters.
+                                </p>
+                            </Card>
+                        </Col>
+
+                        <Col md={4}>
+                            <Card className="h-100 border p-4 shadow-sm bg-white">
+                                <div className="d-flex align-items-center gap-3 mb-3 text-primary">
+                                    <div className="p-3 bg-primary bg-opacity-10 rounded">
+                                        <FaShieldAlt size={24} />
+                                    </div>
+                                    <h3 className="h5 fw-bold mb-0 text-dark">Transparent Simulation</h3>
+                                </div>
+                                <p className="text-muted mb-0" style={{ lineHeight: '1.6' }}>
+                                    Concert ticketing and receipt generation operate in an explicit test environment without unauthorized payment deductions.
+                                </p>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Container>
+            </section>
+
+            {/* Platform Sections Breakdown */}
+            <section className="py-5 bg-white border-top border-bottom" aria-labelledby="sections-heading">
+                <Container className="content-container py-4">
+                    <Row className="text-center mb-5">
+                        <Col>
+                            <h2 id="sections-heading" className="h3 fw-bold text-dark mb-2">
+                                Event Modules
+                            </h2>
+                            <p className="text-muted mx-auto" style={{ maxWidth: '650px' }}>
+                                Select the event workflow that matches your organizational or discovery goals.
+                            </p>
+                        </Col>
+                    </Row>
+
+                    <Row className="g-4">
+                        <Col md={4}>
+                            <Card className="h-100 border p-4 shadow-sm">
+                                <Card.Body className="d-flex flex-column p-0">
+                                    <div className="d-flex align-items-center mb-3">
+                                        <div className="p-2 bg-light rounded text-primary me-3">
+                                            <FaUsers size={24} />
+                                        </div>
+                                        <div>
+                                            <Card.Title as="h3" className="h5 fw-bold mb-0 text-dark">Personal Events</Card.Title>
+                                            <small className="text-muted">Private & Group Gatherings</small>
+                                        </div>
+                                    </div>
+                                    <Card.Text className="text-muted mb-4" style={{ lineHeight: '1.6' }}>
+                                        Ideal for private gatherings, team meetups, and celebrations. Maintain a verified guest list, monitor confirmations, and share direct event links.
+                                    </Card.Text>
+                                    <div className="mt-auto">
+                                        <Link to="/personal-events">
+                                            <Button variant="outline-dark" className="w-100 fw-semibold">
+                                                Manage Personal Events
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+
+                        <Col md={4}>
+                            <Card className="h-100 border p-4 shadow-sm">
+                                <Card.Body className="d-flex flex-column p-0">
+                                    <div className="d-flex align-items-center mb-3">
+                                        <div className="p-2 bg-light rounded text-primary me-3">
+                                            <FaMusic size={24} />
+                                        </div>
+                                        <div>
+                                            <Card.Title as="h3" className="h5 fw-bold mb-0 text-dark">Concert Events</Card.Title>
+                                            <small className="text-muted">Public & Tiered Ticketing</small>
+                                        </div>
+                                    </div>
+                                    <Card.Text className="text-muted mb-4" style={{ lineHeight: '1.6' }}>
+                                        Browse live concert listings with tiered seating (Gold, Platinum, Diamond) and execute simulated reservations with instant receipt downloads.
+                                    </Card.Text>
+                                    <div className="mt-auto">
+                                        <Link to="/concert-events">
+                                            <Button variant="outline-dark" className="w-100 fw-semibold">
+                                                Browse Concert Events
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+
+                        <Col md={4}>
+                            <Card className="h-100 border p-4 shadow-sm border-primary">
+                                <Card.Body className="d-flex flex-column p-0">
+                                    <div className="d-flex align-items-center mb-3">
+                                        <div className="p-2 bg-primary bg-opacity-10 rounded text-primary me-3">
+                                            <FaCompass size={24} />
+                                        </div>
+                                        <div>
+                                            <Card.Title as="h3" className="h5 fw-bold mb-0 text-dark">Opportunity Intelligence</Card.Title>
+                                            <small className="text-primary fw-semibold">Personalized Discovery</small>
+                                        </div>
+                                    </div>
+                                    <Card.Text className="text-muted mb-4" style={{ lineHeight: '1.6' }}>
+                                        Configure your profile signals to uncover high-affinity events. View scoring breakdowns explaining exactly why each event matches your interests.
+                                    </Card.Text>
+                                    <div className="mt-auto">
+                                        <Link to="/opportunities">
+                                            <Button variant="primary" className="w-100 fw-semibold">
+                                                Explore Opportunities
+                                            </Button>
+                                        </Link>
+                                    </div>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+                </Container>
+            </section>
+        </div>
     );
 };
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Modal, Button, Form, Row, Col, Badge } from 'react-bootstrap';
-import { FaHeart, FaTools, FaMapMarkerAlt, FaMoneyBillWave, FaLaptop, FaSave } from 'react-icons/fa';
+import { FaHeart, FaTools, FaMapMarkerAlt, FaMoneyBillWave, FaLaptop, FaSave, FaTimes, FaPlus } from 'react-icons/fa';
 
 const SUGGESTED_INTERESTS = ['Rock', 'Jazz', 'EDM', 'Pop', 'Indie', 'Coding', 'AI', 'Startups', 'Design', 'Photography', 'Gaming'];
 const SUGGESTED_SKILLS = ['JavaScript', 'React', 'Python', 'Guitar', 'Singing', 'Public Speaking', 'Marketing', 'Networking'];
@@ -78,181 +78,215 @@ const PreferenceModal = ({ show, onHide, preferences, onSave }) => {
     };
 
     return (
-        <Modal show={show} onHide={onHide} centered size="lg" className="opportunity-modal">
-            <Modal.Header closeButton className="border-0 bg-dark text-white">
-                <Modal.Title className="fw-bold d-flex align-items-center gap-2">
-                    <span>✨ Customize Your Opportunity Preferences</span>
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body className="bg-dark text-white p-4">
-                {error && <div className="alert alert-danger">{error}</div>}
-                <Form onSubmit={handleSubmit}>
+        <Modal show={show} onHide={onHide} centered size="lg">
+            <Form onSubmit={handleSubmit}>
+                <Modal.Header closeButton>
+                    <Modal.Title className="h5 fw-bold text-dark">
+                        Configure Match Preferences
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="p-4">
+                    {error && <div className="alert alert-danger">{error}</div>}
+
                     {/* Interests Section */}
                     <div className="mb-4">
-                        <Form.Label className="fw-bold d-flex align-items-center gap-2 text-info">
-                            <FaHeart /> Interests & Passion Tags
+                        <Form.Label className="fw-semibold text-dark mb-1">
+                            Interests and Passion Tags
                         </Form.Label>
+                        <p className="small text-muted mb-2">
+                            Events matching your tags receive higher relevance weighting in recommendations.
+                        </p>
                         <div className="d-flex gap-2 mb-2">
                             <Form.Control
                                 type="text"
-                                placeholder="e.g. Rock, Coding, Indie, Startups (press Add)"
+                                placeholder="e.g. Rock, Coding, Indie, Startups"
                                 value={interestInput}
                                 onChange={(e) => setInterestInput(e.target.value)}
                                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddInterest(); } }}
-                                className="bg-dark text-white border-secondary"
                             />
-                            <Button variant="outline-info" onClick={() => handleAddInterest()} type="button">
-                                Add
+                            <Button 
+                                variant="outline-primary" 
+                                type="button" 
+                                onClick={() => handleAddInterest()}
+                                className="d-flex align-items-center gap-1"
+                            >
+                                <FaPlus size={11} /> Add
                             </Button>
                         </div>
-                        <div className="d-flex flex-wrap gap-1 mb-2">
-                            {interests.map(item => (
-                                <Badge key={item} bg="primary" className="p-2 d-flex align-items-center gap-2 rounded-pill">
-                                    <span>#{item}</span>
-                                    <span style={{ cursor: 'pointer' }} onClick={() => handleRemoveInterest(item)}>✕</span>
-                                </Badge>
-                            ))}
-                        </div>
-                        <div className="small text-muted mb-1">Quick suggestions:</div>
-                        <div className="d-flex flex-wrap gap-1">
-                            {SUGGESTED_INTERESTS.filter(s => !interests.includes(s.toLowerCase())).slice(0, 8).map(s => (
-                                <Badge
-                                    key={s}
-                                    bg="secondary"
-                                    className="p-1 px-2 rounded-pill"
-                                    style={{ cursor: 'pointer', opacity: 0.8 }}
-                                    onClick={() => handleAddInterest(s)}
+                        {interests.length > 0 && (
+                            <div className="d-flex flex-wrap gap-1 mb-2">
+                                {interests.map(item => (
+                                    <Badge 
+                                        key={item} 
+                                        bg="primary" 
+                                        className="p-2 d-inline-flex align-items-center gap-2"
+                                    >
+                                        #{item}
+                                        <FaTimes 
+                                            style={{ cursor: 'pointer' }} 
+                                            onClick={() => handleRemoveInterest(item)} 
+                                            title="Remove tag" 
+                                        />
+                                    </Badge>
+                                ))}
+                            </div>
+                        )}
+                        <div className="d-flex flex-wrap gap-1 align-items-center mt-2">
+                            <span className="small text-muted me-1">Suggestions:</span>
+                            {SUGGESTED_INTERESTS.filter(s => !interests.includes(s.toLowerCase())).map(item => (
+                                <Button
+                                    key={item}
+                                    variant="outline-secondary"
+                                    size="sm"
+                                    className="py-0 px-2"
+                                    style={{ fontSize: '0.8rem' }}
+                                    onClick={() => handleAddInterest(item)}
                                 >
-                                    + {s}
-                                </Badge>
+                                    +{item}
+                                </Button>
                             ))}
                         </div>
                     </div>
+
+                    <hr className="my-4" />
 
                     {/* Skills Section */}
                     <div className="mb-4">
-                        <Form.Label className="fw-bold d-flex align-items-center gap-2 text-warning">
-                            <FaTools /> Skills & Proficiencies
+                        <Form.Label className="fw-semibold text-dark mb-1">
+                            Skills & Capabilities
                         </Form.Label>
+                        <p className="small text-muted mb-2">
+                            Add technical or creative skills to match relevant conferences, hackathons, or workshops.
+                        </p>
                         <div className="d-flex gap-2 mb-2">
                             <Form.Control
                                 type="text"
-                                placeholder="e.g. JavaScript, Guitar, Photography, Public Speaking"
+                                placeholder="e.g. JavaScript, Public Speaking, Guitar"
                                 value={skillInput}
                                 onChange={(e) => setSkillInput(e.target.value)}
                                 onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddSkill(); } }}
-                                className="bg-dark text-white border-secondary"
                             />
-                            <Button variant="outline-warning" onClick={() => handleAddSkill()} type="button">
-                                Add
+                            <Button 
+                                variant="outline-primary" 
+                                type="button" 
+                                onClick={() => handleAddSkill()}
+                                className="d-flex align-items-center gap-1"
+                            >
+                                <FaPlus size={11} /> Add
                             </Button>
                         </div>
-                        <div className="d-flex flex-wrap gap-1 mb-2">
-                            {skills.map(item => (
-                                <Badge key={item} bg="warning" text="dark" className="p-2 d-flex align-items-center gap-2 rounded-pill">
-                                    <span>{item}</span>
-                                    <span style={{ cursor: 'pointer' }} onClick={() => handleRemoveSkill(item)}>✕</span>
-                                </Badge>
-                            ))}
-                        </div>
-                        <div className="small text-muted mb-1">Quick suggestions:</div>
-                        <div className="d-flex flex-wrap gap-1">
-                            {SUGGESTED_SKILLS.filter(s => !skills.includes(s.toLowerCase())).slice(0, 8).map(s => (
-                                <Badge
-                                    key={s}
-                                    bg="secondary"
-                                    className="p-1 px-2 rounded-pill"
-                                    style={{ cursor: 'pointer', opacity: 0.8 }}
-                                    onClick={() => handleAddSkill(s)}
+                        {skills.length > 0 && (
+                            <div className="d-flex flex-wrap gap-1 mb-2">
+                                {skills.map(item => (
+                                    <Badge 
+                                        key={item} 
+                                        bg="secondary" 
+                                        className="p-2 d-inline-flex align-items-center gap-2"
+                                    >
+                                        {item}
+                                        <FaTimes 
+                                            style={{ cursor: 'pointer' }} 
+                                            onClick={() => handleRemoveSkill(item)} 
+                                            title="Remove skill" 
+                                        />
+                                    </Badge>
+                                ))}
+                            </div>
+                        )}
+                        <div className="d-flex flex-wrap gap-1 align-items-center mt-2">
+                            <span className="small text-muted me-1">Suggestions:</span>
+                            {SUGGESTED_SKILLS.filter(s => !skills.includes(s.toLowerCase())).map(item => (
+                                <Button
+                                    key={item}
+                                    variant="outline-secondary"
+                                    size="sm"
+                                    className="py-0 px-2"
+                                    style={{ fontSize: '0.8rem' }}
+                                    onClick={() => handleAddSkill(item)}
                                 >
-                                    + {s}
-                                </Badge>
+                                    +{item}
+                                </Button>
                             ))}
                         </div>
                     </div>
 
+                    <hr className="my-4" />
+
                     {/* Preferred Categories */}
                     <div className="mb-4">
-                        <Form.Label className="fw-bold text-light-custom">Preferred Event Categories</Form.Label>
-                        <div className="d-flex flex-wrap gap-2">
+                        <Form.Label className="fw-semibold text-dark mb-1">
+                            Preferred Event Categories
+                        </Form.Label>
+                        <div className="d-flex flex-wrap gap-2 mt-2">
                             {CATEGORY_OPTIONS.map(cat => {
                                 const selected = preferredCategories.includes(cat);
                                 return (
                                     <Button
                                         key={cat}
-                                        type="button"
-                                        size="sm"
                                         variant={selected ? 'primary' : 'outline-secondary'}
-                                        className="rounded-pill px-3"
+                                        size="sm"
                                         onClick={() => toggleCategory(cat)}
                                     >
-                                        {cat} {selected && '✓'}
+                                        {cat}
                                     </Button>
                                 );
                             })}
                         </div>
                     </div>
 
-                    <Row>
-                        {/* Preferred Location */}
+                    <hr className="my-4" />
+
+                    {/* Location & Budget Row */}
+                    <Row className="g-3">
                         <Col md={6}>
-                            <Form.Group className="mb-3">
-                                <Form.Label className="fw-bold d-flex align-items-center gap-2 text-success">
-                                    <FaMapMarkerAlt /> Preferred City / Location
+                            <Form.Group>
+                                <Form.Label className="fw-semibold text-dark mb-1">
+                                    Base Location
                                 </Form.Label>
                                 <Form.Control
                                     type="text"
-                                    placeholder="e.g. Bangalore, Mumbai, New York"
+                                    placeholder="City or Metropolitan Area (e.g., Mumbai, NY)"
                                     value={preferredLocation}
                                     onChange={(e) => setPreferredLocation(e.target.value)}
-                                    className="bg-dark text-white border-secondary"
                                 />
                             </Form.Group>
                         </Col>
-
-                        {/* Max Budget */}
                         <Col md={6}>
-                            <Form.Group className="mb-3">
-                                <Form.Label className="fw-bold d-flex align-items-center gap-2 text-danger">
-                                    <FaMoneyBillWave /> Maximum Budget (₹)
+                            <Form.Group>
+                                <Form.Label className="fw-semibold text-dark mb-1">
+                                    Maximum Budget Ceiling (INR)
                                 </Form.Label>
                                 <Form.Control
                                     type="number"
-                                    min="0"
-                                    placeholder="e.g. 1500 (leave blank for any)"
+                                    placeholder="e.g., 2000"
                                     value={maxBudget}
                                     onChange={(e) => setMaxBudget(e.target.value)}
-                                    className="bg-dark text-white border-secondary"
                                 />
                             </Form.Group>
                         </Col>
                     </Row>
 
-                    {/* Online Events Preference */}
-                    <div className="mb-4 p-3 rounded" style={{ background: 'rgba(255, 255, 255, 0.05)' }}>
+                    {/* Online Events Checkbox */}
+                    <div className="mt-4 pt-2">
                         <Form.Check
-                            type="switch"
-                            id="allow-online-switch"
-                            label={
-                                <span className="d-flex align-items-center gap-2">
-                                    <FaLaptop className="text-info" /> Include Online & Virtual Events in Recommendations
-                                </span>
-                            }
+                            type="checkbox"
+                            id="allow-online-events"
+                            label="Include virtual / online events regardless of physical location"
                             checked={allowOnline}
                             onChange={(e) => setAllowOnline(e.target.checked)}
+                            className="text-dark small"
                         />
                     </div>
-
-                    <div className="d-flex justify-content-end gap-2 pt-2 border-top border-secondary">
-                        <Button variant="outline-light" onClick={onHide} type="button" className="rounded-pill px-4">
-                            Cancel
-                        </Button>
-                        <Button variant="primary" type="submit" disabled={saving} className="rounded-pill px-4 fw-bold d-flex align-items-center gap-2">
-                            <FaSave /> {saving ? 'Saving...' : 'Save & Update Matches'}
-                        </Button>
-                    </div>
-                </Form>
-            </Modal.Body>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="outline-secondary" onClick={onHide} type="button">
+                        Cancel
+                    </Button>
+                    <Button variant="primary" type="submit" disabled={saving}>
+                        {saving ? 'Saving...' : 'Save Preferences'}
+                    </Button>
+                </Modal.Footer>
+            </Form>
         </Modal>
     );
 };

@@ -1,8 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const crypto = require('crypto');
 const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 const { protect } = require('../middleware/authMiddleware');
+const { sendOtpEmail } = require('../services/emailService');
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -52,20 +54,116 @@ router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
     try {
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Please provide email and password' });
+        }
+
         const user = await User.findOne({ email });
 
         if (user && (await user.matchPassword(password))) {
-            res.json({
-                _id: user._id,
-                name: user.name,
+            // Generate secure 6-digit OTP
+            const otp = crypto.randomInt(100000, 1000000).toString();
+            const otpHash = crypto.createHash('sha256').update(otp).digest('hex');
+
+            user.loginOtp = otpHash;
+            user.loginOtpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes expiry
+            await user.save();
+
+            // Send OTP email (or dev log)
+            await sendOtpEmail(user.email, otp, user.name);
+
+            return res.json({
+                otpRequired: true,
                 email: user.email,
-                token: generateToken(user._id),
+                message: 'A 6-digit verification code has been sent to your email address.',
+                devOtp: (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) ? otp : undefined
             });
         } else {
             res.status(401).json({ message: 'Invalid email or password' });
         }
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error('Login error:', error);
+        res.status(500).json({ message: error.message || 'Login failed' });
+    }
+});
+
+// Verify Login OTP
+router.post('/verify-login-otp', async (req, res) => {
+    const { email, otp } = req.body;
+
+    try {
+        if (!email || !otp) {
+            return res.status(400).json({ message: 'Email and verification code are required' });
+        }
+
+        const user = await User.findOne({ email });
+
+        if (!user || !user.loginOtp || !user.loginOtpExpires) {
+            return res.status(400).json({ message: 'No pending OTP verification found. Please log in again.' });
+        }
+
+        if (user.loginOtpExpires.getTime() < Date.now()) {
+            user.loginOtp = null;
+            user.loginOtpExpires = null;
+            await user.save();
+            return res.status(400).json({ message: 'Verification code has expired. Please request a new code.' });
+        }
+
+        const inputHash = crypto.createHash('sha256').update(otp.trim()).digest('hex');
+        if (inputHash !== user.loginOtp) {
+            return res.status(400).json({ message: 'Invalid verification code. Please check and try again.' });
+        }
+
+        // OTP verified successfully - clear OTP
+        user.loginOtp = null;
+        user.loginOtpExpires = null;
+        await user.save();
+
+        res.json({
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            token: generateToken(user._id),
+            message: 'Login successful'
+        });
+    } catch (error) {
+        console.error('Verify OTP error:', error);
+        res.status(500).json({ message: error.message || 'Verification failed' });
+    }
+});
+
+// Resend Login OTP
+router.post('/resend-login-otp', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        if (!email) {
+            return res.status(400).json({ message: 'Email is required' });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'Account not found' });
+        }
+
+        // Generate new 6-digit OTP
+        const otp = crypto.randomInt(100000, 1000000).toString();
+        const otpHash = crypto.createHash('sha256').update(otp).digest('hex');
+
+        user.loginOtp = otpHash;
+        user.loginOtpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes expiry
+        await user.save();
+
+        await sendOtpEmail(user.email, otp, user.name);
+
+        res.json({
+            success: true,
+            message: 'A new verification code has been sent to your email.',
+            devOtp: (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) ? otp : undefined
+        });
+    } catch (error) {
+        console.error('Resend OTP error:', error);
+        res.status(500).json({ message: error.message || 'Failed to resend code' });
     }
 });
 

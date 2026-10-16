@@ -15,6 +15,14 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    loginOtp: {
+        type: String,
+        default: null
+    },
+    loginOtpExpires: {
+        type: Date,
+        default: null
+    },
     preferences: {
         interests: {
             type: [String],

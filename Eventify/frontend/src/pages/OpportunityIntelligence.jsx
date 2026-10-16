@@ -1,6 +1,16 @@
 import { useState, useEffect, useContext, useCallback } from 'react';
-import { Container, Row, Col, Button, Form, Spinner, Alert, Badge, Pagination } from 'react-bootstrap';
-import { FaSlidersH, FaFilter, FaRedo, FaGlobe, FaMapMarkerAlt, FaHeart, FaTools, FaMoneyBillWave, FaArrowRight } from 'react-icons/fa';
+import { Container, Row, Col, Button, Form, Spinner, Alert, Badge, Card } from 'react-bootstrap';
+import { 
+    FaSlidersH, 
+    FaFilter, 
+    FaRedo, 
+    FaGlobe, 
+    FaMapMarkerAlt, 
+    FaMoneyBillWave, 
+    FaArrowRight, 
+    FaCheck, 
+    FaCompass 
+} from 'react-icons/fa';
 import axios from 'axios';
 import AuthContext from '../context/AuthContext';
 import OpportunityCard from '../components/OpportunityCard';
@@ -109,152 +119,174 @@ const OpportunityIntelligence = () => {
 
     return (
         <div className="page-wrapper">
-            <div className="full-width-section" style={{ paddingTop: '100px', paddingBottom: '80px' }}>
-                <div className="content-container">
-
-                    {/* Hero Header */}
-                    <div className="text-center mb-5">
-                        <span className="badge border border-info text-info bg-transparent rounded-pill px-3 py-2 mb-3 fw-bold shadow-sm">
-                            🎯 Opportunity Intelligence
-                        </span>
-                        <h1 className="display-4 fw-bold text-white mb-3">
-                            Personalized Discovery Tailored to You
-                        </h1>
-                        <p className="text-light-custom fs-5 mx-auto" style={{ maxWidth: '750px', opacity: 0.9 }}>
-                            Our transparent, multi-signal recommendation algorithm analyzes your interests, skills, location, and budget to connect you with events where you'll thrive.
-                        </p>
+            {/* Hero Header Section */}
+            <section className="bg-white border-bottom py-5" aria-labelledby="opp-heading">
+                <Container className="content-container">
+                    <div className="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                        <div>
+                            <div className="d-inline-flex align-items-center gap-2 mb-2">
+                                <span className="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25">
+                                    Multi-Signal Matching Engine
+                                </span>
+                            </div>
+                            <h1 id="opp-heading" className="h2 fw-bold text-dark mb-2">
+                                Opportunity Intelligence
+                            </h1>
+                            <p className="text-muted mb-0" style={{ maxWidth: '680px' }}>
+                                Transparent, deterministic event matching based on explicit user interests, verified skills, preferred location, and budget constraints.
+                            </p>
+                        </div>
+                        <Button
+                            variant="outline-primary"
+                            className="px-4 py-2 d-flex align-items-center gap-2 fw-semibold"
+                            onClick={() => setShowPrefModal(true)}
+                        >
+                            <FaSlidersH /> Configure Signals
+                        </Button>
                     </div>
+                </Container>
+            </section>
 
-                    {/* User Preferences Summary Bar */}
-                    <div className="glass-card p-4 mb-4">
-                        <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
-                            <div className="d-flex align-items-center gap-3 flex-wrap">
+            <section className="py-5">
+                <Container className="content-container">
+                    {/* Active User Preference Signals Summary */}
+                    <Card className="border shadow-sm mb-4">
+                        <Card.Body className="p-3 px-4">
+                            <div className="d-flex flex-wrap justify-content-between align-items-center gap-3">
                                 <div>
-                                    <div className="small text-muted text-uppercase fw-bold" style={{ letterSpacing: '0.5px' }}>Active Profile Signals</div>
-                                    <div className="d-flex flex-wrap gap-2 align-items-center mt-1">
+                                    <div className="small text-secondary text-uppercase fw-bold mb-1" style={{ letterSpacing: '0.04em' }}>
+                                        Active Profile Constraints
+                                    </div>
+                                    <div className="d-flex flex-wrap gap-2 align-items-center">
                                         {preferences?.interests && preferences.interests.length > 0 ? (
-                                            preferences.interests.slice(0, 4).map(item => (
-                                                <Badge key={item} bg="primary" className="fw-normal rounded-pill">#{item}</Badge>
+                                            preferences.interests.slice(0, 5).map(item => (
+                                                <Badge key={item} bg="light" text="dark" className="border fw-semibold">
+                                                    #{item}
+                                                </Badge>
                                             ))
                                         ) : (
-                                            <span className="small text-light-custom">No interests configured yet</span>
+                                            <span className="small text-muted">No custom interest tags set</span>
                                         )}
 
                                         {preferences?.preferredLocation && (
-                                            <Badge bg="success" className="fw-normal rounded-pill d-flex align-items-center gap-1">
+                                            <Badge bg="light" text="secondary" className="border d-flex align-items-center gap-1">
                                                 <FaMapMarkerAlt size={10} /> {preferences.preferredLocation}
                                             </Badge>
                                         )}
 
                                         {preferences?.maxBudget !== null && preferences?.maxBudget !== undefined && (
-                                            <Badge bg="danger" className="fw-normal rounded-pill d-flex align-items-center gap-1">
-                                                <FaMoneyBillWave size={10} /> ≤ ₹{preferences.maxBudget}
+                                            <Badge bg="light" text="success" className="border d-flex align-items-center gap-1">
+                                                <FaMoneyBillWave size={10} /> Max ₹{preferences.maxBudget}
                                             </Badge>
                                         )}
                                     </div>
                                 </div>
-                            </div>
-                            <Button
-                                variant="outline-light"
-                                className="rounded-pill px-4 fw-bold shadow-sm d-flex align-items-center gap-2"
-                                onClick={() => setShowPrefModal(true)}
-                            >
-                                <FaSlidersH /> Customize Preferences
-                            </Button>
-                        </div>
-                    </div>
-
-                    {/* Filters Toolbar */}
-                    <div className="glass-card p-4 mb-5">
-                        <Row className="g-3 align-items-center">
-                            <Col md={4}>
-                                <Form.Label className="small text-muted fw-bold mb-1">Category</Form.Label>
-                                <Form.Select
-                                    value={selectedCategory}
-                                    onChange={(e) => { setSelectedCategory(e.target.value); setCurrentPage(1); }}
-                                    className="bg-dark text-white border-secondary"
-                                >
-                                    {CATEGORIES.map(cat => (
-                                        <option key={cat} value={cat}>{cat}</option>
-                                    ))}
-                                </Form.Select>
-                            </Col>
-
-                            <Col md={3}>
-                                <Form.Label className="small text-muted fw-bold mb-1">Format</Form.Label>
-                                <Form.Select
-                                    value={formatFilter}
-                                    onChange={(e) => { setFormatFilter(e.target.value); setCurrentPage(1); }}
-                                    className="bg-dark text-white border-secondary"
-                                >
-                                    <option value="all">All Formats</option>
-                                    <option value="in-person">In-Person Only</option>
-                                    <option value="online">Online / Virtual Only</option>
-                                </Form.Select>
-                            </Col>
-
-                            <Col md={3}>
-                                <Form.Label className="small text-muted fw-bold mb-1">Max Budget (₹)</Form.Label>
-                                <Form.Control
-                                    type="number"
-                                    placeholder="Filter by price..."
-                                    value={budgetFilter}
-                                    onChange={(e) => { setBudgetFilter(e.target.value); setCurrentPage(1); }}
-                                    className="bg-dark text-white border-secondary"
-                                />
-                            </Col>
-
-                            <Col md={2} className="d-flex align-items-end">
                                 <Button
                                     variant="outline-secondary"
-                                    className="w-100 rounded-pill text-white border-secondary d-flex align-items-center justify-content-center gap-2"
-                                    onClick={handleResetFilters}
+                                    size="sm"
+                                    onClick={() => setShowPrefModal(true)}
                                 >
-                                    <FaRedo size={12} /> Reset
+                                    Edit Signals
                                 </Button>
-                            </Col>
-                        </Row>
+                            </div>
+                        </Card.Body>
+                    </Card>
+
+                    {/* Filter Controls Toolbar */}
+                    <Card className="border shadow-sm mb-4">
+                        <Card.Body className="p-4">
+                            <Row className="g-3 align-items-end">
+                                <Col md={4}>
+                                    <Form.Label className="small text-muted fw-bold mb-1">Event Category</Form.Label>
+                                    <Form.Select
+                                        value={selectedCategory}
+                                        onChange={(e) => { setSelectedCategory(e.target.value); setCurrentPage(1); }}
+                                    >
+                                        {CATEGORIES.map(cat => (
+                                            <option key={cat} value={cat}>{cat}</option>
+                                        ))}
+                                    </Form.Select>
+                                </Col>
+
+                                <Col md={3}>
+                                    <Form.Label className="small text-muted fw-bold mb-1">Attendance Format</Form.Label>
+                                    <Form.Select
+                                        value={formatFilter}
+                                        onChange={(e) => { setFormatFilter(e.target.value); setCurrentPage(1); }}
+                                    >
+                                        <option value="all">All Formats</option>
+                                        <option value="in-person">In-Person Only</option>
+                                        <option value="online">Online / Virtual Only</option>
+                                    </Form.Select>
+                                </Col>
+
+                                <Col md={3}>
+                                    <Form.Label className="small text-muted fw-bold mb-1">Max Budget (INR)</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        placeholder="Optional max fee"
+                                        value={budgetFilter}
+                                        onChange={(e) => { setBudgetFilter(e.target.value); setCurrentPage(1); }}
+                                    />
+                                </Col>
+
+                                <Col md={2}>
+                                    <Button
+                                        variant="outline-secondary"
+                                        className="w-100 d-flex align-items-center justify-content-center gap-2"
+                                        onClick={handleResetFilters}
+                                    >
+                                        <FaRedo size={12} /> Reset
+                                    </Button>
+                                </Col>
+                            </Row>
+                        </Card.Body>
+                    </Card>
+
+                    {/* Results Overview */}
+                    <div className="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                        <h2 className="h5 fw-bold text-dark mb-0">
+                            Ranked Opportunities ({totalResults})
+                        </h2>
+                        <span className="small text-muted">
+                            Ordered deterministically by transparent match score
+                        </span>
                     </div>
 
-                    {/* Content Section: Loading, Error, Empty, or Cards */}
+                    {/* Grid of Results */}
                     {loading ? (
                         <div className="text-center py-5">
-                            <Spinner animation="border" variant="primary" style={{ width: '3rem', height: '3rem' }} />
-                            <p className="text-light-custom mt-3">Evaluating personalized opportunities...</p>
+                            <Spinner animation="border" variant="primary" style={{ width: '2.5rem', height: '2.5rem' }} />
+                            <p className="text-muted mt-3 small">Computing recommendation weights...</p>
                         </div>
                     ) : error ? (
-                        <div className="glass-card p-5 text-center">
+                        <Card className="text-center p-5 border">
                             <Alert variant="danger" className="mb-4">{error}</Alert>
-                            <Button variant="primary" className="rounded-pill px-4" onClick={fetchRecommendations}>
-                                <FaRedo className="me-2" /> Retry
-                            </Button>
-                        </div>
-                    ) : opportunities.length === 0 ? (
-                        <div className="glass-card p-5 text-center">
-                            <h3 className="fw-bold text-white mb-3">No Matching Opportunities Found</h3>
-                            <p className="text-light-custom mb-4 mx-auto" style={{ maxWidth: '600px' }}>
-                                No upcoming public events match your active filter criteria. Try expanding your search filters or refining your preferences.
-                            </p>
-                            <div className="d-flex justify-content-center gap-3">
-                                <Button variant="outline-light" className="rounded-pill px-4" onClick={handleResetFilters}>
-                                    Reset Filters
-                                </Button>
-                                <Button variant="primary" className="rounded-pill px-4" onClick={() => setShowPrefModal(true)}>
-                                    Edit Preferences
+                            <div className="d-flex justify-content-center">
+                                <Button variant="primary" onClick={fetchRecommendations}>
+                                    <FaRedo className="me-2" /> Retry
                                 </Button>
                             </div>
-                        </div>
+                        </Card>
+                    ) : opportunities.length === 0 ? (
+                        <Card className="text-center p-5 border">
+                            <Card.Body>
+                                <h3 className="h5 fw-bold text-dark mb-2">No Matching Opportunities Found</h3>
+                                <p className="text-muted small mb-4 mx-auto" style={{ maxWidth: '540px' }}>
+                                    No active events match the selected category and filter constraints. Adjust your filter values or update your profile signals.
+                                </p>
+                                <div className="d-flex justify-content-center gap-2">
+                                    <Button variant="outline-secondary" onClick={handleResetFilters}>
+                                        Reset Filters
+                                    </Button>
+                                    <Button variant="primary" onClick={() => setShowPrefModal(true)}>
+                                        Update Preferences
+                                    </Button>
+                                </div>
+                            </Card.Body>
+                        </Card>
                     ) : (
                         <>
-                            <div className="d-flex justify-content-between align-items-center mb-4">
-                                <h4 className="fw-bold text-white mb-0">
-                                    Recommended For You ({totalResults})
-                                </h4>
-                                <span className="small text-muted">
-                                    Ranked deterministically by multi-factor score
-                                </span>
-                            </div>
-
                             <Row className="g-4 mb-5">
                                 {opportunities.map(item => (
                                     <Col xs={12} md={6} lg={4} key={item.event._id}>
@@ -266,37 +298,36 @@ const OpportunityIntelligence = () => {
                                 ))}
                             </Row>
 
-                            {/* Pagination Controls */}
+                            {/* Pagination */}
                             {totalPages > 1 && (
-                                <div className="d-flex justify-content-center">
-                                    <Pagination className="glass-pagination">
-                                        <Pagination.Prev
-                                            disabled={currentPage === 1}
-                                            onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                                        />
-                                        {[...Array(totalPages).keys()].map(idx => (
-                                            <Pagination.Item
-                                                key={idx + 1}
-                                                active={idx + 1 === currentPage}
-                                                onClick={() => setCurrentPage(idx + 1)}
-                                            >
-                                                {idx + 1}
-                                            </Pagination.Item>
-                                        ))}
-                                        <Pagination.Next
-                                            disabled={currentPage === totalPages}
-                                            onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                                        />
-                                    </Pagination>
+                                <div className="d-flex justify-content-center gap-2">
+                                    <Button
+                                        variant="outline-secondary"
+                                        size="sm"
+                                        disabled={currentPage === 1}
+                                        onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                                    >
+                                        Previous
+                                    </Button>
+                                    <span className="px-3 py-1 small text-muted align-self-center">
+                                        Page {currentPage} of {totalPages}
+                                    </span>
+                                    <Button
+                                        variant="outline-secondary"
+                                        size="sm"
+                                        disabled={currentPage === totalPages}
+                                        onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                                    >
+                                        Next
+                                    </Button>
                                 </div>
                             )}
                         </>
                     )}
+                </Container>
+            </section>
 
-                </div>
-            </div>
-
-            {/* Modals */}
+            {/* Preferences Modal */}
             <PreferenceModal
                 show={showPrefModal}
                 onHide={() => setShowPrefModal(false)}
@@ -304,6 +335,7 @@ const OpportunityIntelligence = () => {
                 onSave={handleSavePreferences}
             />
 
+            {/* Explanation Modal */}
             <ExplanationModal
                 show={showExplainModal}
                 onHide={() => setShowExplainModal(false)}

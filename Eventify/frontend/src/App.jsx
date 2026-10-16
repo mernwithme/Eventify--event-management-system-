@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { AuthProvider } from './context/AuthContext';
 import AuthContext from './context/AuthContext';
@@ -12,6 +12,9 @@ import Register from './pages/Register';
 import PersonalEvents from './pages/PersonalEvents';
 import ConcertEvents from './pages/ConcertEvents';
 import OpportunityIntelligence from './pages/OpportunityIntelligence';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import Terms from './pages/Terms';
+import NotFound from './pages/NotFound';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
@@ -20,7 +23,7 @@ const Navigation = () => {
   const { user, logout } = useContext(AuthContext);
 
   return (
-    <Navbar expand="lg" className="glass-navbar fixed-top" variant="dark">
+    <Navbar expand="lg" className="navbar-app sticky-top" variant="dark">
       <Container fluid className="px-4">
         <Navbar.Brand as={Link} to="/" className="fw-bold">Eventify</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -31,7 +34,7 @@ const Navigation = () => {
             <Nav.Link as={Link} to="/personal-events">Personal Events</Nav.Link>
             <Nav.Link as={Link} to="/concert-events">Concert Events</Nav.Link>
           </Nav>
-          <Nav>
+          <Nav className="align-items-center">
             {user ? (
               <>
                 <Navbar.Text className="me-3">
@@ -62,6 +65,8 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
+            <Route path="/terms" element={<Terms />} />
             <Route
               path="/opportunities"
               element={
@@ -86,7 +91,7 @@ function App() {
                 </ProtectedRoute>
               }
             />
-            <Route path="*" element={<Navigate to="/" replace />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
         <Footer />
